@@ -1,15 +1,14 @@
-const PORT = 3000;
+const { PORT = 3000 } = process.env;
 const express = require('express');
 const server = express();
+const morgan = require('morgan');
+const apiRouter = require('./api');
+const { client } = require('./db');
+
 require('dotenv').config();
 
-
-const morgan = require('morgan');
 server.use(morgan('dev'));
-
 server.use(express.json())
-
-const apiRouter = require('./api');
 server.use('/api', apiRouter);
 
 // server.use((req, res, next) => {
@@ -19,7 +18,7 @@ server.use('/api', apiRouter);
   
 //     next();
 //   });
-const { client } = require('./db');
+
 client.connect();
 
 server.listen(PORT, () => {

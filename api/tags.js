@@ -13,7 +13,7 @@ tagsRouter.get('/', async (req, res) => {
     res.send({ tags });
   });
 
-  tagsRouter.get("/:tagName/posts", async (req, res, next) => {
+tagsRouter.get("/:tagName/posts", async (req, res, next) => {
     const { tagName } = req.params;
 
     try {

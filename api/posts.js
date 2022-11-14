@@ -9,11 +9,21 @@ postsRouter.use((req, res, next) => {
     next();
 });
   
-postsRouter.get('/', async (req, res) => {
-    const posts = await getAllPosts();
-  
-    res.send({ posts });
-  });
+postsRouter.get('/', async (req, res, next) => {
+  try {
+    const allPosts = await getAllPosts();
+
+    const posts = allPosts.filter(post => {
+      return post.actve || (req.user && post.author.id === req.user.id);
+    });
+
+    res.send({
+      posts
+    });
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 
 postsRouter.post("/", requireUser, async (req, res, next) => {
   const {title, content, tags = ""} = req.body;
